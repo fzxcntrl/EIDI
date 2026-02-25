@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#021a12">
+    <title>Eidi Wall 🎊</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="particles" class="particles"></div>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <main class="app-container">
+
+        <section class="section-container text-center mt-2">
+            <h1 class="hero-title">Blessings Wall</h1>
+            <p class="text-muted">Recent Eidi received from amazing people! 💚</p>
+
+            <div class="glass-card mt-4 text-left">
+                <h3 class="text-gold mb-3 flex items-center gap-2">
+                    <i class='bx bxs-heart-circle'></i> Recent Blessings
+                </h3>
+
+                <div class="blessings-list" id="blessingsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button id="imPaidBtn" class="btn btn-primary w-full">I've Sent Eidi! 🎉</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class='bx bxs-home-heart'></i>
+            <span>Home</span>
+        </a>
+        <a href="eidi-wall.html" class="nav-item active">
+            <i class='bx bxs-party'></i>
+            <span>Wall</span>
+        </a>
+        <a href="about.html" class="nav-item">
+            <i class='bx bxs-info-circle'></i>
+            <span>About</span>
+        </a>
+    </nav>
+
+    <!-- Confetti script -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        const blessings = [
+            { name: "Someone", amount: "₹501", msg: "MashAllah 💚" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for new payment from localStorage
+            const storedPayment = localStorage.getItem('recentPayment');
+            if (storedPayment) {
+                try {
+                    const parsedPayment = JSON.parse(storedPayment);
+                    blessings.unshift(parsedPayment);
+                    // Optional: remove after reading so it doesn't stay forever
+                    // localStorage.removeItem('recentPayment');
+                } catch (e) {
+                    console.error('Error parsing payment data');
+                }
+            }
+
+            // Setup fake blessings
+            const listEl = document.getElementById('blessingsList');
+            blessings.forEach((b, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.classList.add('blessing-item');
+                    item.innerHTML = `
+            <div class="b-avatar">${b.name.charAt(0).toUpperCase()}</div>
+            <div>
+              <div class="text-light" style="font-weight:600;">${b.name} sent <span class="text-gold">${b.amount}</span></div>
+              <div class="text-muted" style="font-size: 0.85rem;">"${b.msg}"</div>
+            </div>
+          `;
+                    listEl.appendChild(item);
+                }, index * 400); // Stagger animation
+            });
+
+            // Confetti action
+            const paidBtn = document.getElementById('imPaidBtn');
+            if (paidBtn) {
+                paidBtn.addEventListener('click', () => {
+                    showToast('Thank you for the Eidi! May Allah bless you ✨', 'bx-gift');
+
+                    confetti({
+                        particleCount: 150,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#d4af37', '#074b33', '#ffffff']
+                    });
+
+                    // Optional haptic vibration override
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                });
+            }
+        });
+
+        // Fake periodic toast to make it feel alive
+        setInterval(() => {
+            const messages = [
+                "Someone just sent ₹101 🎉",
+                "MashAllah! ₹51 received 💚",
+                "Eidi received ✨"
+            ];
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            showToast(randomMsg, 'bxs-star');
+        }, 15000);
+    </script>
+</body>
+
+</html>

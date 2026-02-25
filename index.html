@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#021a12">
+  <title>Eidi Collection 🌙</title>
+
+  <!-- SEO & Open Graph -->
+  <meta name="description" content="Send your Eidi with love this festive season! 💚">
+  <meta property="og:title" content="Eidi Collection 🌙">
+  <meta property="og:description" content="Click here to easily send Eidi via UPI. May Allah bless you!">
+  <!-- <meta property="og:image" content="link-to-preview-image.jpg"> -->
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/192?text=🌙">
+
+  <!-- Fonts & Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Full Screen Loader -->
+  <div id="loader" class="loader-overlay">
+    <div class="crescent-loader">🌙</div>
+  </div>
+
+  <!-- Background Animated Stars -->
+  <div id="particles" class="particles"></div>
+
+  <!-- Global Toast Notifications -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Music Toggle -->
+  <div id="musicToggle" class="music-toggle">
+    <i class='bx bx-volume-mute'></i>
+  </div>
+
+  <!-- Welcome Modal -->
+  <div id="welcomeModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon">🌙</div>
+      <h2 class="text-gold mb-2">Eid Mubarak!</h2>
+      <p class="text-muted mb-4">May Allah bless you with happiness and prosperity. Send your Eidi with love 💚</p>
+      <button id="continueBtn" class="btn btn-primary w-full">Continue ✨</button>
+    </div>
+  </div>
+
+  <main class="app-container">
+
+    <!-- Hero Section -->
+    <section class="section-container text-center mt-4 position-relative">
+      <!-- Decorative Lanterns -->
+      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069811.png" alt="Lantern" class="lantern lantern-left"
+        style="filter: drop-shadow(0 0 10px var(--accent-gold-glow));">
+      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069811.png" alt="Lantern" class="lantern lantern-right"
+        style="filter: drop-shadow(0 0 10px var(--accent-gold-glow)); transform: scaleY(0.9);">
+
+      <!-- Profile -->
+      <div class="profile-img-container">
+        <img id="profileImage" src="images/profile.jpg" alt="Profile" class="profile-img">
+      </div>
+
+      <h1 id="profileName" class="hero-title mt-2">Loading...</h1>
+      <p id="profileMessage" class="text-muted mt-2 mb-4" style="font-size: 1.1rem; padding: 0 1rem;"></p>
+
+      <button id="sendEidiTopBtn" class="btn btn-primary">
+        👉 Send Eidi Now
+      </button>
+    </section>
+
+    <!-- Payment / QR Section -->
+    <section id="qrSection" class="section-container mt-2">
+      <div class="glass-card text-center">
+        <h3 class="text-gold mb-3">Scan & Pay securely!</h3>
+
+        <div class="qr-wrapper">
+          <img id="qrImage" src="images/qr.png" alt="UPI QR Code" class="qr-image">
+        </div>
+
+        <div class="flex items-center justify-center gap-2 mb-3">
+          <span class="text-muted" style="font-size: 0.9rem;">UPI ID: <strong id="upiIdText"
+              class="text-light">...</strong></span>
+          <button id="copyUpiBtn" class="btn btn-icon btn-glass" style="width: 32px; height: 32px;"
+            aria-label="Copy UPI ID">
+            <i class='bx bx-copy'></i>
+          </button>
+        </div>
+
+        <div class="mb-2">
+          <p class="text-muted mb-1 text-sm text-left">Your Name (Optional)</p>
+          <input type="text" id="senderName" class="custom-amount-input mb-3" placeholder="Enter your name"
+            style="display: block; width: 100%;">
+
+          <p class="text-muted mb-2 text-sm text-left">Or tap amount to pay via app</p>
+          <div class="amount-pills">
+            <div class="pill" data-amount="51">₹51</div>
+            <div class="pill active" data-amount="101">₹101</div>
+            <div class="pill" data-amount="501">₹501</div>
+            <div class="pill" data-amount="custom">Custom</div>
+          </div>
+
+          <input type="number" id="customAmount" class="custom-amount-input" placeholder="Enter amount (₹)" min="1">
+        </div>
+
+        <button id="payBtn" class="btn btn-primary w-full mt-2" style="font-size: 1.2rem; padding: 1.2rem;">
+          Pay ₹101 via UPI <i class='bx bxs-check-shield'></i>
+        </button>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <i class='bx bxs-home-heart'></i>
+      <span>Home</span>
+    </a>
+    <a href="eidi-wall.html" class="nav-item">
+      <i class='bx bxs-party'></i>
+      <span>Wall</span>
+    </a>
+    <a href="about.html" class="nav-item">
+      <i class='bx bxs-info-circle'></i>
+      <span>About</span>
+    </a>
+  </nav>
+
+  <script src="script.js"></script>
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('SW registered!'))
+          .catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
+</html>

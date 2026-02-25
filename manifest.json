@@ -1,0 +1,21 @@
+{
+  "name": "Eidi Collection",
+  "short_name": "Eidi",
+  "description": "Send Eidi effortlessly this festive season.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#021a12",
+  "theme_color": "#021a12",
+  "icons": [
+    {
+      "src": "images/profile.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/qr.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
