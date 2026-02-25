@@ -1,121 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#021a12">
-    <title>About 🌙</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#021a12">
+  <title>About 🌙</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div id="particles" class="particles"></div>
-    <div id="toastContainer" class="toast-container"></div>
+  <!-- Animated Background -->
+  <div id="particles" class="particles"></div>
 
-    <main class="app-container">
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
 
-        <section class="section-container mt-2">
-            <div class="glass-card text-center mb-4 relative" style="overflow: visible;">
-                <div class="absolute" style="top: -20px; font-size: 3rem; left:0; right:0;">🕌</div>
-                <h2 class="text-gold mt-4 mb-2">Eid Mubarak</h2>
+  <main class="app-container">
 
-                <p class="text-muted mb-3 italic"
-                    style="font-family: 'Inter', serif; font-size: 1.1rem; border-left: 3px solid var(--accent-gold); padding-left: 1rem; text-align: left;">
-                    "Tahaabu, tahaabbu"<br>
-                    <span style="font-size: 0.9rem;">(Give gifts to one another, you will love each other) - <strong
-                            class="text-gold-light">Al-Adab Al-Mufrad</strong></span>
-                </p>
+    <section class="section-container">
 
-                <p class="text-light mb-4 text-sm" style="opacity: 0.9;">
-                    Thank you for celebrating with me! Your kindness makes this Eid special.
-                </p>
+      <div class="glass-card text-center about-card">
 
-                <div class="glass-card" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 12px;">
-                    <h4 class="text-gold-light mb-1">Total Supporters</h4>
-                    <div class="flex items-center justify-center gap-2">
-                        <i class='bx bxs-user-plus text-gold' style="font-size: 1.5rem;"></i>
-                        <span id="counter" class="text-light" style="font-size: 2rem; font-weight: bold;">0</span>
-                    </div>
-                </div>
-            </div>
+        <div class="mosque-icon">🕌</div>
 
-            <div class="text-center">
-                <h3 class="mb-3 text-gold">Challenge 3 friends to send Eidi 😄</h3>
-                <div class="flex justify-center gap-3">
-                    <a href="#" id="shareWaBtn" class="btn btn-icon btn-glass"
-                        style="color: #25D366; border-color: #25D366;">
-                        <i class='bx bxl-whatsapp' style="font-size: 1.8rem;"></i>
-                    </a>
-                    <button id="shareCopyBtn" class="btn btn-icon btn-glass">
-                        <i class='bx bx-link-alt' style="font-size: 1.5rem;"></i>
-                    </button>
-                </div>
-            </div>
+        <h2 class="text-gold">Eid Mubarak</h2>
 
-        </section>
+        <blockquote class="hadith-quote">
+          “Tahaabu, tahaabbu”  
+          <span>(Give gifts to one another, you will love each other) – <strong>Al-Adab Al-Mufrad</strong></span>
+        </blockquote>
 
-    </main>
+        <p class="text-light">
+          Thank you for celebrating with me. Your kindness makes this Eid special.
+        </p>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
-            <i class='bx bxs-home-heart'></i>
-            <span>Home</span>
-        </a>
-        <a href="eidi-wall.html" class="nav-item">
-            <i class='bx bxs-party'></i>
-            <span>Wall</span>
-        </a>
-        <a href="about.html" class="nav-item active">
-            <i class='bx bxs-info-circle'></i>
-            <span>About</span>
-        </a>
-    </nav>
+        <div class="supporter-card">
+          <h4>Total Supporters</h4>
+          <div class="counter-wrapper">
+            <i class='bx bxs-user-plus'></i>
+            <span id="counter">0</span>
+          </div>
+        </div>
 
-    <script src="script.js"></script>
+      </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Counter animation
-            const counterEl = document.getElementById('counter');
-            const target = 142; // arbitrary fun number
-            let count = 0;
-            const interval = setInterval(() => {
-                count += Math.floor(Math.random() * 5) + 1;
-                if (count >= target) {
-                    count = target;
-                    clearInterval(interval);
-                }
-                counterEl.textContent = count;
-            }, 50);
+      <div class="text-center share-section">
+        <h3>Challenge 3 friends to send Eidi 😄</h3>
 
-            // Share Logic
-            const shareText = "Hey! It's Eidi time 🌙 Celebrate with me by sending a little Eidi blessing through my site. Tap here: ";
-            const url = window.location.href.replace('about.html', ''); // Points to base dir
+        <div class="share-buttons">
+          <a id="shareWaBtn" class="btn btn-icon whatsapp-btn">
+            <i class='bx bxl-whatsapp'></i>
+          </a>
 
-            const waBtn = document.getElementById('shareWaBtn');
-            if (waBtn) {
-                waBtn.href = `https://wa.me/?text=${encodeURIComponent(shareText + url)}`;
-            }
+          <button id="shareCopyBtn" class="btn btn-icon btn-glass">
+            <i class='bx bx-link-alt'></i>
+          </button>
+        </div>
+      </div>
 
-            const copyBtn = document.getElementById('shareCopyBtn');
-            if (copyBtn) {
-                copyBtn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(shareText + url).then(() => {
-                        showToast('Link copied! Share it now ✨', 'bx-check-double');
-                    });
-                });
-            }
-        });
-    </script>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class='bx bxs-home-heart'></i>
+      <span>Home</span>
+    </a>
+    <a href="eidi-wall.html" class="nav-item">
+      <i class='bx bxs-party'></i>
+      <span>Wall</span>
+    </a>
+    <a href="about.html" class="nav-item active">
+      <i class='bx bxs-info-circle'></i>
+      <span>About</span>
+    </a>
+  </nav>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
