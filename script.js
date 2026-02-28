@@ -280,8 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let paymentNote = "Eidi";
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // UPI Params (Keep it extremely lean for personal UPI IDs to avoid app-specific validation failures)
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&cu=INR`;
+            // Generate a unique transaction reference to prevent UPI apps from caching intent sessions
+            const uniqueTr = `EIDI${Date.now()}`;
+
+            // UPI Params
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${uniqueTr}`;
 
             let upiPaymentURL;
             const isAndroid = /Android/i.test(navigator.userAgent);
