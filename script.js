@@ -29,11 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isDark) {
                 document.body.removeAttribute('data-theme');
                 localStorage.setItem('eidiTheme', 'light');
-                themeBtn.textContent = '🌙';
+                themeBtn.textContent = '🌙 light mode';
             } else {
                 document.body.setAttribute('data-theme', 'dark');
                 localStorage.setItem('eidiTheme', 'dark');
-                themeBtn.textContent = '☀️';
+                themeBtn.textContent = '☀️ dark mode';
             }
         });
     }
@@ -283,8 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Generate a unique transaction reference to prevent UPI apps from caching intent sessions
             const uniqueTr = `EIDI${Date.now()}`;
 
+            // Format amount to 2 decimal places to ensure UPI app parses it correctly
+            const formattedAmount = parseFloat(selectedAmount).toFixed(2);
+
             // UPI Params
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${uniqueTr}`;
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${uniqueTr}`;
 
             let upiPaymentURL;
             const isAndroid = /Android/i.test(navigator.userAgent);
