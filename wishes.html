@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Reflections & Sunnah 🕌</title>
+    <!-- Google Fonts for Islamic aesthetic -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="light-mode">
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="back-link font-bold text-gold">🔙 Back</a>
+        <div class="logo font-bold text-gold arabic-font">Reflections</div>
+        <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle Theme">🌙</button>
+    </nav>
+
+    <!-- Background Animated Moon (Decorative) -->
+    <div class="floating-moon">🌙</div>
+
+    <!-- Main Content -->
+    <main class="container text-center pb-2 pt-2">
+        <section class="glass-effect scroll-reveal reflections-container">
+            <h2 class="arabic-font text-gold mb-1">Lanterns of Wisdom</h2>
+            <p class="subtitle mb-2">Tap a lantern to read an authentic verse or Hadith.</p>
+
+            <div class="lanterns-container">
+                <button class="lantern-btn ripple" data-index="0" aria-label="Lantern 1">🏮</button>
+                <button class="lantern-btn ripple" data-index="1" aria-label="Lantern 2">🏮</button>
+                <button class="lantern-btn ripple" data-index="2" aria-label="Lantern 3">🏮</button>
+            </div>
+
+            <hr class="divider mb-2">
+
+            <!-- Sunnah Section (Readable & Attractive) -->
+            <div class="sunnah-section mb-2">
+                <h3 class="arabic-font text-gold mb-1 text-left">Beautiful Sunnahs of Eid</h3>
+                <div class="sunnah-list text-left">
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">🚿</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Performing Ghusl</h4>
+                            <p class="text-sm text-muted">Purify yourself before the Eid prayer.</p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">👔</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Wearing Best Clothes</h4>
+                            <p class="text-sm text-muted">Adorn yourself with your best, clean garments.</p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">🌴</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Eating Dates</h4>
+                            <p class="text-sm text-muted">Eat an odd number of dates before leaving for Salat al-Eid
+                                (Eid ul-Fitr).</p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">🚶</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Taking Different Routes</h4>
+                            <p class="text-sm text-muted">Go to the prayer using one route and return via another.</p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">📿</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Reciting Takbeer</h4>
+                            <p class="text-sm text-muted">Recite Takbeer continuously on the way to the prayer ground.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">🤝</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Greeting One Another</h4>
+                            <p class="text-sm text-muted">Say "Taqabbalallahu Minna wa Minkum" (May Allah accept [good
+                                deeds] from us and from you).</p>
+                        </div>
+                    </div>
+
+                    <div class="sunnah-item">
+                        <span class="sunnah-icon">🕌</span>
+                        <div class="sunnah-content">
+                            <h4 class="font-bold text-gold">Walking to Prayer</h4>
+                            <p class="text-sm text-muted">It is recommended to walk to the Eid prayer if possible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider mb-2">
+
+            <!-- Digital Tasbih -->
+            <div class="tasbih-section pb-2">
+                <h3 class="arabic-font text-gold mb-1">Digital Tasbih</h3>
+                <p id="dhikrPhrase" class="dhikr-phrase font-bold mb-1">SubhanAllah (سبحان الله)</p>
+                <div class="tasbih-container">
+                    <button id="tasbihBtn" class="tasbih-btn ripple">
+                        <span id="tasbihCount" class="tasbih-count">0</span>
+                    </button>
+                    <button id="resetTasbihBtn" class="reset-btn ripple">↻ Reset</button>
+                </div>
+                <p class="subtitle mt-1 text-sm">Tap to count your Dhikr.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Wisdom Modal -->
+    <div id="wisdomModal" class="modal-overlay hidden">
+        <div class="modal-content glass-effect">
+            <h2 class="arabic-font text-gold mb-1">📖 Wisdom</h2>
+            <p id="wisdomText" class="wish-text mb-2">Verse or Hadith will appear here.</p>
+            <button id="closeWisdomModalBtn" class="btn outline-btn ripple w-full">Jazakallah Khair</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Confetti standard JS library for simple particle effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

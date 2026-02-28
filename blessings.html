@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Blessings & Memory 🌙</title>
+    <!-- Google Fonts for elegant typography -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="light-mode pattern-bg-body">
+
+    <!-- 1. Full-Screen Eid Animation Intro -->
+    <div id="introOverlay" class="intro-overlay pattern-bg">
+        <div class="intro-content text-center">
+            <div class="intro-moon glowing-crescent">🌙</div>
+            <div class="ambient-lanterns">
+                <span class="intro-lantern l-1">🏮</span>
+                <span class="intro-lantern l-2">🏮</span>
+            </div>
+            <h1 class="arabic-font intro-title text-gold mt-2">Eid Mubarak</h1>
+            <p class="subtitle text-muted mt-1">A message just for you...</p>
+            <button id="openMessageBtn" class="btn primary-btn mt-2 ripple intro-btn">
+                👉 Open My Eid Message
+            </button>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="back-link font-bold text-gold">🔙 Home</a>
+        <div class="logo font-bold text-gold arabic-font">Blessings</div>
+        <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle Theme">🌙</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container text-center pb-2 pt-2 card-main-content">
+
+        <!-- 2. Personal Message Section -->
+        <section class="personal-message-section glass-effect mb-2">
+            <h2 class="serif-elegant text-gold mb-2">To my dearest friend,</h2>
+            <div class="message-content text-left">
+                <p class="reveal-line">As the crescent moon lights up the night sky...</p>
+                <p class="reveal-line mt-1">I want to take a moment to express my deepest gratitude for your presence in
+                    my life.</p>
+                <p class="reveal-line mt-1">May this beautiful day bring you endless joy, peace, and prosperity.</p>
+                <p class="reveal-line mt-1">May Allah bless your home with warmth and your heart with tranquility.</p>
+                <p class="reveal-line mt-1 font-bold arabic-font text-gold text-center pt-2">Taqabbalallahu Minna wa
+                    Minkum</p>
+                <p class="reveal-line text-sm text-center text-muted">(May Allah accept from us and from you)</p>
+            </div>
+
+            <!-- 3. “Send Me a Dua” Button -->
+            <button id="sendDuaBtn" class="btn outline-btn ripple w-full mt-2">
+                🤲 Send Me a Dua
+            </button>
+        </section>
+
+        <!-- 4. Eid Countdown Timer -->
+        <section class="countdown-section glass-effect mb-2">
+            <h3 class="arabic-font text-gold mb-1">Time Until Eid</h3>
+            <div class="countdown-grid">
+                <div class="time-box">
+                    <span id="days" class="time-val">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-val">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-box">
+                    <span id="mins" class="time-val">00</span>
+                    <span class="time-label">Mins</span>
+                </div>
+                <div class="time-box">
+                    <span id="secs" class="time-val">00</span>
+                    <span class="time-label">Secs</span>
+                </div>
+            </div>
+            <p class="subtitle text-sm mt-1 text-muted">Awaiting the blessed day.</p>
+        </section>
+
+        <!-- 6. Shareable Eid Quote Generator -->
+        <section class="quote-section glass-effect mb-2">
+            <h3 class="arabic-font text-gold mb-1">Eid Inspiration</h3>
+            <div class="quote-container mb-1">
+                <p id="quoteDisplay" class="serif-elegant quote-text text-muted">"May the blessings of Allah fill your
+                    life with happiness and open all the doors of success now and always."</p>
+            </div>
+            <div class="flex-actions">
+                <button id="generateQuoteBtn" class="btn secondary-btn ripple flex-1">
+                    ✨ New Quote
+                </button>
+                <button id="copyQuoteBtn" class="btn outline-btn ripple flex-1">
+                    📋 Copy
+                </button>
+            </div>
+        </section>
+
+        <!-- 7. “Back to Send Eidi” Button -->
+        <section class="conversion-section mt-2 scroll-reveal text-center">
+            <p class="serif-elegant mb-1 text-gold" style="font-size: 1.1rem;">If this made you smile...</p>
+            <a href="payment.html" class="btn primary-btn ripple w-full glow-border bouncy-btn"
+                style="font-size: 1.1rem; padding: 1rem;">
+                💚 Send Your Eidi Here
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Dua Modal -->
+    <div id="duaModal" class="modal-overlay hidden">
+        <div class="modal-content glass-effect">
+            <div class="dua-icon mb-1">🤲</div>
+            <h3 id="duaModalTitle" class="arabic-font text-gold mb-1">Make a silent dua for me</h3>
+            <p id="duaModalText" class="text-muted mb-2">Please close your eyes and take a moment to pray for my
+                well-being and success...</p>
+            <div id="duaLoader" class="loader mt-1 mb-2">
+                <div class="spinner"></div>
+            </div>
+            <button id="closeDuaBtn" class="btn outline-btn ripple w-full hidden">Close</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
