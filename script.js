@@ -266,19 +266,40 @@ document.addEventListener('DOMContentLoaded', () => {
             let paymentNote = "Eidi";
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // UPI Params
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&tn=${encodeURIComponent(paymentNote)}&cu=INR`;
+            // Generate a random transaction ID (required by some apps like GPay/PhonePe to show the amount screen)
+            const trId = "EIDI" + Date.now();
+
+            // Some specific apps like Paytm or Gpay will drop the amount parameter if merchant code (mc) is missing. We use a generic '0000' for P2P transfers.
+            const mcCode = "0000";
+
+            // UPI Params (Added tr=transactionReqId and mc=merchantCode to force the amount screen)
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&tn=${encodeURIComponent(paymentNote)}&tr=${trId}&mc=${mcCode}&cu=INR`;
 
             let upiPaymentURL;
             const isAndroid = /Android/i.test(navigator.userAgent);
 
             // Determine protocol based on platform and user selection
             if (isAndroid) {
-                // Force Android intent chooser
-                upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;end`;
+                // Force Android intent chooser and ensure amount screen is triggered
+                upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
+                if (appPrefix !== "upi" && appPrefix) {
+                    // if specific app was chosen via fallback chooser on android
+                    let packageStr = "";
+                    if (appPrefix === "gpay") packageStr = "com.google.android.apps.nbu.paisa.user";
+                    else if (appPrefix === "phonepe") packageStr = "com.phonepe.app";
+                    else if (appPrefix === "paytmmp") packageStr = "net.one97.paytm";
+
+                    if (packageStr) {
+                        upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;package=${packageStr};end`;
+                    }
+                }
             } else {
                 // For iOS / standard link using selected app prefix
-                upiPaymentURL = `${appPrefix}://pay?${upiParams}`;
+                // GPay on iOS sometimes requires 'tez://upi/' instead of 'gpay://upi/'
+                let finalPrefix = appPrefix;
+                if (appPrefix === "gpay") finalPrefix = "tez";
+
+                upiPaymentURL = `${finalPrefix}://pay?${upiParams}`;
             }
 
             // Trigger Confetti and UI transition
