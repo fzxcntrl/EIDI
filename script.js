@@ -18,22 +18,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('eidiTheme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+    const renderThemeToggle = (isDark) => {
+        const icon = isDark ? '☀️' : '🌙';
+        return `
+            <span>${icon}</span>
+            <div class="theme-switch">
+                <div class="theme-switch-handle"></div>
+            </div>
+        `;
+    };
+
     if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
         document.body.setAttribute('data-theme', 'dark');
-        if (themeBtn) themeBtn.textContent = '☀️';
     }
 
+    // Initialize the toggle button state
     if (themeBtn) {
+        const currentIsDark = document.body.getAttribute('data-theme') === 'dark';
+        themeBtn.innerHTML = renderThemeToggle(currentIsDark);
+
         themeBtn.addEventListener('click', () => {
             const isDark = document.body.getAttribute('data-theme') === 'dark';
             if (isDark) {
                 document.body.removeAttribute('data-theme');
                 localStorage.setItem('eidiTheme', 'light');
-                themeBtn.textContent = '🌙 light mode';
+                themeBtn.innerHTML = renderThemeToggle(false);
             } else {
                 document.body.setAttribute('data-theme', 'dark');
                 localStorage.setItem('eidiTheme', 'dark');
-                themeBtn.textContent = '☀️ dark mode';
+                themeBtn.innerHTML = renderThemeToggle(true);
             }
         });
     }
