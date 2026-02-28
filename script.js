@@ -274,23 +274,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Determine protocol based on platform and user selection
             if (isAndroid) {
-                // If a specific app was chosen from the fallback chooser, use its custom URI scheme
-                // Otherwise use the standard Android intent for the general "UPI" option
                 if (appPrefix !== "upi" && appPrefix) {
-                    upiPaymentURL = `${appPrefix}://pay?${upiParams}`;
+                    // For Android app chooser fallbacks
+                    let packageStr = "";
+                    if (appPrefix === "gpay") packageStr = "com.google.android.apps.nbu.paisa.user";
+                    else if (appPrefix === "phonepe") packageStr = "com.phonepe.app";
+                    else if (appPrefix === "paytmmp") packageStr = "net.one97.paytm";
+
+                    // Use intent scheme with explicit package to force the app to open
+                    upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;package=${packageStr};end`;
                 } else {
-                    // Standard Android Intent without a forced package so the OS chooser works correctly 
-                    // and passes the am parameter cleanly to the chosen app
-                    upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;end`;
+                    // Standard Android Intent without a forced package
+                    upiPaymentURL = `upi://pay?${upiParams}`;
                 }
             } else {
                 // For iOS / standard link using selected app prefix
-                // GPay on iOS sometimes requires 'tez://upi/' instead of 'gpay://upi/'
+                // Apple requires explicitly registered deep link protocols per-app
                 let finalPrefix = appPrefix;
-                if (appPrefix === "gpay") finalPrefix = "tez";
-                else if (appPrefix === "paytmmp") finalPrefix = "paytm"; // specifically paytm on ios
+                if (appPrefix === "gpay") finalPrefix = "gpay";
+                else if (appPrefix === "paytmmp") finalPrefix = "paytmmp";
+                else if (appPrefix === "phonepe") finalPrefix = "phonepe";
 
-                upiPaymentURL = `${finalPrefix}://pay?${upiParams}`;
+                // If 'Other UPI App' is selected on iOS, use standard upi://
+                if (finalPrefix === "upi" || !finalPrefix) {
+                    upiPaymentURL = `upi://pay?${upiParams}`;
+                } else {
+                    upiPaymentURL = `${finalPrefix}://upi/pay?${upiParams}`;
+                }
             }
 
             // Trigger Confetti and UI transition
