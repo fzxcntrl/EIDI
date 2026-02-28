@@ -6,8 +6,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Global Configuration
-    const UPI_ID = "receiver@upi";
-    const UPI_NAME = "Farzain";
+    const UPI_ID = "farzain0.1n@okaxis";
+    const UPI_NAME = "Farzain Naikwade";
 
     /* ==========================================
        1. Global Theme Management
