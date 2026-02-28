@@ -162,6 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const UPI_ID = "receiver@upi";
     const UPI_NAME = "Farzain";
 
+    // Get App Chooser Elements
+    const upiChooserModal = document.getElementById('upiChooserModal');
+    const closeChooserBtn = document.getElementById('closeChooserBtn');
+    const upiAppBtns = document.querySelectorAll('.upi-app-btn');
+
     if (amountBtns.length > 0 && sendMoneyBtn) {
 
         // Handle pre-defined amount clicks
@@ -196,6 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Close Chooser Modal
+        if (closeChooserBtn) {
+            closeChooserBtn.addEventListener('click', () => {
+                upiChooserModal.classList.add('hidden');
+            });
+        }
+
         // Handle Submit logic
         sendMoneyBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -211,6 +223,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+            if (isIOS && upiChooserModal) {
+                // On iOS, show the custom app chooser modal
+                upiChooserModal.classList.remove('hidden');
+            } else {
+                // On Android or Desktop, proceed with intent or standard UPI link
+                processPaymentFlow("upi");
+            }
+        });
+
+        // Handle App Selection from Chooser
+        if (upiAppBtns) {
+            upiAppBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const selectedApp = e.target.getAttribute('data-app');
+                    upiChooserModal.classList.add('hidden');
+                    processPaymentFlow(selectedApp);
+                });
+            });
+        }
+
+        function processPaymentFlow(appPrefix) {
             // Optional Inputs cleanup
             const donorName = userNameInput ? userNameInput.value.trim() : '';
             const donorMsg = userMessageInput ? userMessageInput.value.trim() : '';
@@ -219,8 +255,20 @@ document.addEventListener('DOMContentLoaded', () => {
             let paymentNote = "Eidi";
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // UPI Deep Link Generation
-            const upiPaymentURL = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&tn=${encodeURIComponent(paymentNote)}&cu=INR`;
+            // UPI Params
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${selectedAmount}&tn=${encodeURIComponent(paymentNote)}&cu=INR`;
+
+            let upiPaymentURL;
+            const isAndroid = /Android/i.test(navigator.userAgent);
+
+            // Determine protocol based on platform and user selection
+            if (isAndroid) {
+                // Force Android intent chooser
+                upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;end`;
+            } else {
+                // For iOS / standard link using selected app prefix
+                upiPaymentURL = `${appPrefix}://pay?${upiParams}`;
+            }
 
             // Trigger Confetti and UI transition
             triggerConfetti();
@@ -241,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 3000);
 
             }, 1000);
-        });
+        }
     }
 
     function triggerConfetti() {
