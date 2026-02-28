@@ -5,6 +5,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Global Configuration
+    const UPI_ID = "receiver@upi";
+    const UPI_NAME = "Farzain";
+
     /* ==========================================
        1. Global Theme Management
        ========================================== */
@@ -145,6 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
+    const copyUpiBtn = document.getElementById('copyUpiBtn');
+    if (copyUpiBtn) {
+        copyUpiBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                showToast("📋 UPI ID copied to clipboard!");
+            }).catch(err => {
+                console.error("Could not copy UPI ID", err);
+            });
+        });
+    }
+
     /* ==========================================
        4. Payment Page Logic (payment.html)
        ========================================== */
@@ -157,10 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loaderAnimation = document.getElementById('loaderAnimation');
 
     let selectedAmount = null;
-
-    // Hardcode UPI details here
-    const UPI_ID = "receiver@upi";
-    const UPI_NAME = "Farzain";
 
     // Get App Chooser Elements
     const upiChooserModal = document.getElementById('upiChooserModal');
