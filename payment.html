@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eidi Payment 💚</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="light-mode">
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="back-link font-bold text-gold">🔙 Back</a>
+        <div class="logo font-bold text-gold arabic-font">Payment</div>
+        <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle Theme">🌙</button>
+    </nav>
+
+    <!-- Background Animated Moon -->
+    <div class="floating-moon">🌙</div>
+
+    <!-- Main Content -->
+    <main class="container text-center pb-2 pt-2">
+        <section class="payment-card glass-effect scroll-reveal">
+            <h2 class="arabic-font text-gold mb-1">Select Eidi Amount</h2>
+            <p class="subtitle mb-2">Every contribution counts!</p>
+
+            <!-- Predefined Amount Grid -->
+            <div class="amount-grid mb-2">
+                <button class="amount-btn ripple" data-amount="51">₹51</button>
+                <button class="amount-btn ripple" data-amount="101">₹101</button>
+                <button class="amount-btn ripple" data-amount="301">₹301</button>
+                <button class="amount-btn ripple" data-amount="501">₹501</button>
+                <button class="amount-btn ripple" data-amount="1001">₹1001</button>
+            </div>
+
+            <!-- Custom Amount Option -->
+            <div class="input-group mb-2">
+                <div class="input-wrapper">
+                    <span class="currency-prefix">₹</span>
+                    <input type="number" id="customAmountField" class="input-field" placeholder="Custom Amount" min="1"
+                        step="1">
+                </div>
+                <small id="amountErrorMsg" class="error-text hidden">Please enter a valid amount (₹1 or more).</small>
+            </div>
+
+            <hr class="divider mb-2">
+
+            <!-- Name and Message -->
+            <h3 class="arabic-font text-gold mb-1 text-left">Your Details (Optional)</h3>
+            <div class="input-group mb-1">
+                <input type="text" id="userNameInput" class="input-field" placeholder="Your Name">
+            </div>
+            <div class="input-group mb-2">
+                <textarea id="userMessageInput" class="input-field" rows="3"
+                    placeholder="Leave a nice blessing..."></textarea>
+            </div>
+
+            <!-- Payment Button and Redirect Loader -->
+            <button id="sendMoneyBtn" class="btn primary-btn ripple w-full glow-border">
+                💸 Send Money via UPI
+            </button>
+
+            <div id="loaderAnimation" class="loader hidden mt-1">
+                <div class="spinner"></div>
+                <p class="mt-1 text-sm">Opening secure UPI gateway...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

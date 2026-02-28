@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="200" height="200" fill="#014421" />
-  <circle cx="100" cy="100" r="50" fill="#D4AF37" />
-  <text x="100" y="105" font-family="sans-serif" font-size="20" fill="#fff" text-anchor="middle">Photo</text>
-</svg>
