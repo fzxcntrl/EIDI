@@ -293,14 +293,17 @@ document.addEventListener('DOMContentLoaded', () => {
             let paymentNote = "Eidi";
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // Generate a unique transaction reference to prevent UPI apps from caching intent sessions
-            const uniqueTr = `EIDI${Date.now()}`;
+            // Add a unique identifier to the transaction note to prevent UPI apps from caching intent sessions
+            const uniqueId = `EIDI${Date.now()}`;
 
             // Format amount to 2 decimal places to ensure UPI app parses it correctly
             const formattedAmount = parseFloat(selectedAmount).toFixed(2);
 
-            // UPI Params
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${uniqueTr}`;
+            // Append uniqueId to paymentNote to avoid duplicate intent URLs
+            const finalNote = `${paymentNote} Tnx: ${uniqueId}`;
+
+            // UPI Params (Removed &tr= to avoid P2P limit reached error, using unique tn instead)
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(finalNote)}`;
 
             let upiPaymentURL;
             const isAndroid = /Android/i.test(navigator.userAgent);
