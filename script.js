@@ -234,37 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function startUPIPayment(amount) {
-            const donorName = userNameInput ? userNameInput.value.trim() : '';
-            let paymentNote = "Eidi";
-            if (donorName) paymentNote += ` from ${donorName}`;
-
-            const txnId = "EIDI" + Date.now();
             const formattedAmount = Number(amount).toFixed(2);
-
-            const upiParams =
-                `pa=${UPI_ID}` +
-                `&pn=${encodeURIComponent(UPI_NAME)}` +
-                `&am=${formattedAmount}` +
-                `&cu=INR` +
-                `&tn=${encodeURIComponent(paymentNote)}` +
-                `&tr=${txnId}`;
-
-            const upiPaymentURL = `upi://pay?${upiParams}`;
-
-            triggerConfetti();
-            sendMoneyBtn.classList.add('hidden');
-
-            if (loaderAnimation) loaderAnimation.classList.remove('hidden');
-
-            setTimeout(() => {
-                window.location.href = upiPaymentURL;
-
-                // Restore button state after some time in case they return
-                setTimeout(() => {
-                    sendMoneyBtn.classList.remove('hidden');
-                    if (loaderAnimation) loaderAnimation.classList.add('hidden');
-                }, 3000);
-            }, 700);
+            const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR`;
+            window.location.href = upiLink;
         }
 
         // Handle Submit logic
