@@ -5,9 +5,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Global Configuration
     const UPI_ID = "farzain0.1n@okaxis";
-    const UPI_NAME = "Farzain Naikwade";
+    const UPI_NAME = "Farzain Rafikoddin Naikwade";
 
     /* ==========================================
        1. Global Theme Management
@@ -293,17 +292,14 @@ document.addEventListener('DOMContentLoaded', () => {
             let paymentNote = "Eidi";
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // Add a unique identifier to the transaction note to prevent UPI apps from caching intent sessions
-            const uniqueId = `EIDI${Date.now()}`;
+            // Generate a unique transaction reference
+            const txnId = `EIDI${Date.now()}`;
 
-            // Format amount to 2 decimal places to ensure UPI app parses it correctly
+            // Format amount to ensure it is numeric only
             const formattedAmount = parseFloat(selectedAmount).toFixed(2);
 
-            // Append uniqueId to paymentNote to avoid duplicate intent URLs
-            const finalNote = `${paymentNote} Tnx: ${uniqueId}`;
-
-            // UPI Params (Removed &tr= to avoid P2P limit reached error, using unique tn instead)
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(finalNote)}`;
+            // UPI Params (Strictly following NPCI UPI Intent format)
+            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${txnId}`;
 
             let upiPaymentURL;
             const isAndroid = /Android/i.test(navigator.userAgent);
