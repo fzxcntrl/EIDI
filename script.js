@@ -290,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            const txnId = "EIDI" + Date.now();
             const formattedAmount = Number(selectedAmount).toFixed(2);
 
             const upiParams =
@@ -298,8 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `&pn=${encodeURIComponent(UPI_NAME)}` +
                 `&am=${formattedAmount}` +
                 `&cu=INR` +
-                `&tn=${encodeURIComponent(paymentNote)}` +
-                `&tr=${txnId}`;
+                `&tn=${encodeURIComponent(paymentNote)}`;
 
             const upiPaymentURL = `upi://pay?${upiParams}`;
 
