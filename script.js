@@ -199,11 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedAmount = null;
 
-    // Get App Chooser Elements
-    const upiChooserModal = document.getElementById('upiChooserModal');
-    const closeChooserBtn = document.getElementById('closeChooserBtn');
-    const upiAppBtns = document.querySelectorAll('.upi-app-btn');
-
     if (amountBtns.length > 0 && sendMoneyBtn) {
 
         // Handle pre-defined amount clicks
@@ -238,66 +233,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Close Chooser Modal
-        if (closeChooserBtn) {
-            closeChooserBtn.addEventListener('click', () => {
-                upiChooserModal.classList.add('hidden');
-            });
-        }
-
-        // Handle Submit logic
-        sendMoneyBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Validation
-            if (!selectedAmount || Number(selectedAmount) < 1) {
-                if (amountErrorMsg) amountErrorMsg.classList.remove('hidden');
-
-                // Shake animation for error feedback
-                sendMoneyBtn.style.transform = "translateX(-5px)";
-                setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
-                setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
-                return;
-            }
-
-            const isAndroid = /Android/i.test(navigator.userAgent);
-            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-            if (isIOS && upiChooserModal) {
-                // On iOS, show the custom app chooser modal
-                upiChooserModal.classList.remove('hidden');
-            } else {
-                // On Android or Desktop, proceed with intent or standard UPI link
-                processPaymentFlow("upi");
-            }
-        });
-
-        // Handle App Selection from Chooser
-        if (upiAppBtns) {
-            upiAppBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const selectedApp = e.target.getAttribute('data-app');
-                    upiChooserModal.classList.add('hidden');
-                    processPaymentFlow(selectedApp);
-                });
-            });
-        }
-
-        function processPaymentFlow() {
-
+        function startUPIPayment(amount) {
             const donorName = userNameInput ? userNameInput.value.trim() : '';
             let paymentNote = "Eidi";
-
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            const formattedAmount = Number(selectedAmount).toFixed(2);
+            const txnId = "EIDI" + Date.now();
+            const formattedAmount = Number(amount).toFixed(2);
 
             const upiParams =
                 `pa=${UPI_ID}` +
                 `&pn=${encodeURIComponent(UPI_NAME)}` +
                 `&am=${formattedAmount}` +
                 `&cu=INR` +
-                `&tn=${encodeURIComponent(paymentNote)}`;
+                `&tn=${encodeURIComponent(paymentNote)}` +
+                `&tr=${txnId}`;
 
             const upiPaymentURL = `upi://pay?${upiParams}`;
 
@@ -316,6 +266,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 3000);
             }, 700);
         }
+
+        // Handle Submit logic
+        sendMoneyBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            let amount = selectedAmount;
+            if (customAmountField && customAmountField.value) {
+                amount = customAmountField.value;
+            }
+
+            // Validation
+            if (!amount || Number(amount) <= 0) {
+                if (amountErrorMsg) amountErrorMsg.classList.remove('hidden');
+
+                // Shake animation for error feedback
+                sendMoneyBtn.style.transform = "translateX(-5px)";
+                setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
+                setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
+                return;
+            }
+
+            startUPIPayment(Number(amount));
+        });
     }
 
     function triggerConfetti() {
