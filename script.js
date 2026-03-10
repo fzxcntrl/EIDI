@@ -283,67 +283,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        function processPaymentFlow(appPrefix) {
-            // Optional Inputs cleanup
-            const donorName = userNameInput ? userNameInput.value.trim() : '';
-            const donorMsg = userMessageInput ? userMessageInput.value.trim() : '';
+        function processPaymentFlow() {
 
-            // Note: UPI handles basic notes. We encode URI component to ensure it doesn't break link.
+            const donorName = userNameInput ? userNameInput.value.trim() : '';
             let paymentNote = "Eidi";
+
             if (donorName) paymentNote += ` from ${donorName}`;
 
-            // Generate a unique transaction reference
-            const txnId = `EIDI${Date.now()}`;
+            const txnId = "EIDI" + Date.now();
+            const formattedAmount = Number(selectedAmount).toFixed(2);
 
-            // Format amount to ensure it is numeric only
-            const formattedAmount = parseFloat(selectedAmount).toFixed(2);
+            const upiParams =
+                `pa=${UPI_ID}` +
+                `&pn=${encodeURIComponent(UPI_NAME)}` +
+                `&am=${formattedAmount}` +
+                `&cu=INR` +
+                `&tn=${encodeURIComponent(paymentNote)}` +
+                `&tr=${txnId}`;
 
-            // UPI Params (Strictly following NPCI UPI Intent format)
-            const upiParams = `pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR&tn=${encodeURIComponent(paymentNote)}&tr=${txnId}`;
+            const upiPaymentURL = `upi://pay?${upiParams}`;
 
-            let upiPaymentURL;
-            const isAndroid = /Android/i.test(navigator.userAgent);
-
-            // Determine protocol based on platform and user selection
-            if (isAndroid) {
-                if (appPrefix !== "upi" && appPrefix) {
-                    // For Android app chooser fallbacks
-                    let packageStr = "";
-                    if (appPrefix === "gpay") packageStr = "com.google.android.apps.nbu.paisa.user";
-                    else if (appPrefix === "phonepe") packageStr = "com.phonepe.app";
-                    else if (appPrefix === "paytmmp") packageStr = "net.one97.paytm";
-
-                    // Use intent scheme with explicit package to force the app to open
-                    upiPaymentURL = `intent://pay?${upiParams}#Intent;scheme=upi;package=${packageStr};end`;
-                } else {
-                    // Standard Android Intent without a forced package
-                    upiPaymentURL = `upi://pay?${upiParams}`;
-                }
-            } else {
-                // For iOS / standard link using selected app prefix
-                // Apple requires explicitly registered deep link protocols per-app
-                let finalPrefix = appPrefix;
-                if (appPrefix === "gpay") finalPrefix = "gpay";
-                else if (appPrefix === "paytmmp") finalPrefix = "paytmmp";
-                else if (appPrefix === "phonepe") finalPrefix = "phonepe";
-
-                // If 'Other UPI App' is selected on iOS, use standard upi://
-                if (finalPrefix === "upi" || !finalPrefix) {
-                    upiPaymentURL = `upi://pay?${upiParams}`;
-                } else {
-                    upiPaymentURL = `${finalPrefix}://upi/pay?${upiParams}`;
-                }
-            }
-
-            // Trigger Confetti and UI transition
             triggerConfetti();
             sendMoneyBtn.classList.add('hidden');
 
-            if (loaderAnimation) {
-                loaderAnimation.classList.remove('hidden');
-            }
+            if (loaderAnimation) loaderAnimation.classList.remove('hidden');
 
-            // Slight delay before redirect so user sees the feedback
             setTimeout(() => {
                 window.location.href = upiPaymentURL;
 
@@ -352,8 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendMoneyBtn.classList.remove('hidden');
                     if (loaderAnimation) loaderAnimation.classList.add('hidden');
                 }, 3000);
-
-            }, 1000);
+            }, 700);
         }
     }
 
