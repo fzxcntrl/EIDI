@@ -8,6 +8,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const UPI_ID = "farzain0.1n@okaxis";
     const UPI_NAME = "Farzain Rafikoddin Naikwade";
 
+    // Handle PhonePe Payment Gateway Redirect Callbacks
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('status');
+    const paymentError = urlParams.get('error');
+
+    if (paymentStatus === 'success') {
+        const txnId = urlParams.get('txnId') || '';
+        setTimeout(() => {
+            alert(`Payment Successful! Thank you for your Eidi! \nTransaction ID: ${txnId}`);
+            // Clean up the URL so it doesn't alert on refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 500);
+    } else if (paymentError) {
+        setTimeout(() => {
+            alert(`Payment Failed or Cancelled. Reason: ${paymentError}`);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 500);
+    }
+
     /* ==========================================
        1. Global Theme Management
        ========================================== */
@@ -233,10 +252,40 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        function startUPIPayment(amount) {
-            const formattedAmount = Number(amount).toFixed(2);
-            const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${formattedAmount}&cu=INR`;
-            window.location.href = upiLink;
+        async function startUPIPayment(amount) {
+            triggerConfetti();
+            sendMoneyBtn.classList.add('hidden');
+            if (loaderAnimation) loaderAnimation.classList.remove('hidden');
+
+            try {
+                const donorName = userNameInput ? userNameInput.value.trim() : '';
+
+                const response = await fetch('/api/initiate-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: Number(amount), donorName })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.url) {
+                    // Redirect to PhonePe Checkout Page
+                    window.location.href = data.url;
+                } else {
+                    console.error("Payment initiation failed", data);
+                    alert("Unable to initiate payment. Please try again later.");
+                    resetPaymentUI();
+                }
+            } catch (error) {
+                console.error("Error connecting to payment gateway:", error);
+                alert("Network error. Please try again.");
+                resetPaymentUI();
+            }
+        }
+
+        function resetPaymentUI() {
+            sendMoneyBtn.classList.remove('hidden');
+            if (loaderAnimation) loaderAnimation.classList.add('hidden');
         }
 
         // Handle Submit logic
