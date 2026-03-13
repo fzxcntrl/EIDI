@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const UPI_ID = "farzain0.1n@okaxis";
+    const UPI_ID = "farzain0.1@okaxis";
     const UPI_NAME = "Farzain Rafikoddin Naikwade";
 
     /* ==========================================
@@ -233,15 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const razorpayLinks = {
-            101: "https://rzp.io/rzp/YQ4VpLr6",
-            201: "https://rzp.io/rzp/lTIbNYUi",
-            301: "https://rzp.io/rzp/TvdQD3n",
-            501: "https://rzp.io/rzp/8wOj4PDu",
-            1001: "https://rzp.io/rzp/tkwsrG5",
-            1501: "https://rzp.io/rzp/i7nOttt"
-        };
-
         // Handle Submit logic
         sendMoneyBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -265,21 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const numAmount = Number(amount);
+            const numAmount = Number(amount).toFixed(2);
 
-            if (razorpayLinks[numAmount]) {
-                window.location.href = razorpayLinks[numAmount];
-                return;
-            }
-
-            // If not available, show an error message that only preset amounts are supported
-            if (amountErrorMsg) {
-                amountErrorMsg.textContent = "Only preset amounts are supported at the moment.";
-                amountErrorMsg.classList.remove('hidden');
-            }
-            sendMoneyBtn.style.transform = "translateX(-5px)";
-            setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
-            setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
+            // Generate standard UPI intent link
+            const upiLink = `upi://pay?pa=farzain0.1@okaxis&pn=Farzain%20Rafikoddin%20Naikwade&am=${numAmount}&cu=INR`;
+            
+            window.location.href = upiLink;
         });
     }
 
