@@ -227,12 +227,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Redirect directly to the Razorpay Payment Page
-            // IMPORTANT: To redirect to the thankyou.html page after payment, 
-            // you must configure the "Redirect URL" setting in your Razorpay Dashboard 
-            // for this specific Payment Page to: https://farzain-ki-eidi.vercel.app/thankyou.html
-            
-            window.location.href = "https://razorpay.me/@farzainkieidi";
+            // Show a brief loading message, open Razorpay in a new tab, and redirect the main window to thankyou page
+            if (loaderAnimation) {
+                loaderAnimation.classList.remove('hidden');
+            }
+
+            // Open the Razorpay link in a new tab for the user to complete payment
+            window.open("https://razorpay.me/@farzainkieidi", "_blank");
+
+            // After a short delay to ensure the new tab opens, redirect this main window to the thank you page
+            setTimeout(() => {
+                window.location.href = "thankyou.html";
+            }, 2000);
         });
     }
 
