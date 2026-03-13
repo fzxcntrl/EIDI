@@ -227,18 +227,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Show a brief loading message, open Razorpay in a new tab, and redirect the main window to thankyou page
+            // Show a brief loading message
             if (loaderAnimation) {
                 loaderAnimation.classList.remove('hidden');
             }
 
-            // Open the Razorpay link in a new tab for the user to complete payment
-            window.open("https://razorpay.me/@farzainkieidi", "_blank");
-
-            // After a short delay to ensure the new tab opens, redirect this main window to the thank you page
-            setTimeout(() => {
-                window.location.href = "thankyou.html";
-            }, 2000);
+            // Redirect directly to the Razorpay Payment Page in the same tab
+            window.location.href = "https://rzp.io/rzp/Aom9Xum";
         });
     }
 
