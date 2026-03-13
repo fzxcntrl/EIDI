@@ -187,55 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================
-       4. Payment Page Logic (payment.html)
+       4. Payment Page Logic (payment.html) - REMOVED
        ========================================== */
-    const customAmountField = document.getElementById('customAmountField');
-    const sendMoneyBtn = document.getElementById('sendMoneyBtn');
-    const amountErrorMsg = document.getElementById('amountErrorMsg');
-    const userNameInput = document.getElementById('userNameInput');
-    const userMessageInput = document.getElementById('userMessageInput');
-    const loaderAnimation = document.getElementById('loaderAnimation');
-
-    if (sendMoneyBtn) {
-        // Handle custom amount input overriding errors
-        if (customAmountField) {
-            customAmountField.addEventListener('input', (e) => {
-                const val = e.target.value;
-                if (val && Number(val) > 0) {
-                    if (amountErrorMsg) amountErrorMsg.classList.add('hidden');
-                }
-            });
-        }
-
-        // Handle Submit logic
-        sendMoneyBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            let amount = customAmountField ? customAmountField.value : null;
-
-            // Validation
-            if (!amount || Number(amount) <= 0) {
-                if (amountErrorMsg) {
-                    amountErrorMsg.textContent = "Please enter a valid amount (greater than 0).";
-                    amountErrorMsg.classList.remove('hidden');
-                }
-
-                // Shake animation for error feedback
-                sendMoneyBtn.style.transform = "translateX(-5px)";
-                setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
-                setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
-                return;
-            }
-
-            // Show a brief loading message
-            if (loaderAnimation) {
-                loaderAnimation.classList.remove('hidden');
-            }
-
-            // Redirect directly to the Razorpay Payment Page in the same tab
-            window.location.href = "https://rzp.io/rzp/Aom9Xum";
-        });
-    }
 
     // --- Thank You Page Animations ---
     const thankYouAnimationContainer = document.getElementById('thankYouAnimationContainer');
