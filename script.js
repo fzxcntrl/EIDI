@@ -233,29 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        function startUPIPayment(amount) {
-            const amountInPaise = Math.round(Number(amount) * 100);
-
-            const options = {
-                key: "YOUR_RAZORPAY_KEY_ID",
-                amount: amountInPaise,
-                currency: "INR",
-                name: "Farzain Rafikoddin Naikwade",
-                description: "Eidi Payment",
-                method: {
-                    upi: true
-                },
-                prefill: {
-                    name: userNameInput ? userNameInput.value : ""
-                },
-                theme: {
-                    color: "#014421"
-                }
-            };
-
-            const rzp = new Razorpay(options);
-            rzp.open();
-        }
+        const razorpayLinks = {
+            101: "https://rzp.io/rzp/YQ4VpLr6",
+            201: "https://rzp.io/rzp/lTIbNYUi",
+            301: "https://rzp.io/rzp/TvdQD3n",
+            501: "https://rzp.io/rzp/8wOj4PDu",
+            1001: "https://rzp.io/rzp/tkwsrG5",
+            1501: "https://rzp.io/rzp/i7nOttt"
+        };
 
         // Handle Submit logic
         sendMoneyBtn.addEventListener('click', (e) => {
@@ -268,7 +253,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validation
             if (!amount || Number(amount) <= 0) {
-                if (amountErrorMsg) amountErrorMsg.classList.remove('hidden');
+                if (amountErrorMsg) {
+                    amountErrorMsg.textContent = "Please select an amount.";
+                    amountErrorMsg.classList.remove('hidden');
+                }
 
                 // Shake animation for error feedback
                 sendMoneyBtn.style.transform = "translateX(-5px)";
@@ -277,7 +265,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            startUPIPayment(Number(amount));
+            const numAmount = Number(amount);
+
+            if (razorpayLinks[numAmount]) {
+                window.location.href = razorpayLinks[numAmount];
+                return;
+            }
+
+            // If not available, show an error message that only preset amounts are supported
+            if (amountErrorMsg) {
+                amountErrorMsg.textContent = "Only preset amounts are supported at the moment.";
+                amountErrorMsg.classList.remove('hidden');
+            }
+            sendMoneyBtn.style.transform = "translateX(-5px)";
+            setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
+            setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
         });
     }
 
