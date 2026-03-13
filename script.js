@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Redirect to Razorpay Generic Payment Page Line
-            window.location.href = "razorpay.me/@farzainkieidi";
+            window.location.href = "https://razorpay.me/@farzainkieidi";
         });
     }
 
