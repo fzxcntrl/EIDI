@@ -227,36 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Setup Razorpay options for standard checkout
-            const amountInPaise = Math.round(Number(amount) * 100);
-
-            const options = {
-                key: "YOUR_RAZORPAY_KEY_ID", // Add actual key when deploying
-                amount: amountInPaise,
-                currency: "INR",
-                name: "Farzain Rafikoddin Naikwade",
-                description: "Farzain Ki Eidi",
-                prefill: {
-                    name: userNameInput ? userNameInput.value : ""
-                },
-                theme: {
-                    color: "#014421"
-                },
-                callback_url: "https://farzain-ki-eidi.vercel.app/thankyou.html",
-                redirect: true
-            };
-
-            const rzp = new Razorpay(options);
+            // Redirect directly to the Razorpay Payment Page
+            // IMPORTANT: To redirect to the thankyou.html page after payment, 
+            // you must configure the "Redirect URL" setting in your Razorpay Dashboard 
+            // for this specific Payment Page to: https://farzain-ki-eidi.vercel.app/thankyou.html
             
-            // Show loader while Razorpay initializes
-            if (loaderAnimation) {
-                loaderAnimation.classList.remove('hidden');
-                setTimeout(() => {
-                    loaderAnimation.classList.add('hidden');
-                }, 1500); // Hide after a short delay since Razorpay modal opens
-            }
-
-            rzp.open();
+            window.location.href = "https://razorpay.me/@farzainkieidi";
         });
     }
 
