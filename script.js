@@ -189,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================
        4. Payment Page Logic (payment.html)
        ========================================== */
-    const amountBtns = document.querySelectorAll('.amount-btn');
     const customAmountField = document.getElementById('customAmountField');
     const sendMoneyBtn = document.getElementById('sendMoneyBtn');
     const amountErrorMsg = document.getElementById('amountErrorMsg');
@@ -197,64 +196,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const userMessageInput = document.getElementById('userMessageInput');
     const loaderAnimation = document.getElementById('loaderAnimation');
 
-    let selectedAmount = null;
-
-    if (amountBtns.length > 0 && sendMoneyBtn) {
-
-        // Handle pre-defined amount clicks
-        amountBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all
-                amountBtns.forEach(b => b.classList.remove('active'));
-                // Add to clicked
-                btn.classList.add('active');
-
-                selectedAmount = btn.getAttribute('data-amount');
-
-                // Clear custom input field and errors
-                if (customAmountField) customAmountField.value = '';
-                if (amountErrorMsg) amountErrorMsg.classList.add('hidden');
-            });
-        });
-
-        // Handle custom amount input overriding buttons
+    if (sendMoneyBtn) {
+        // Handle custom amount input overriding errors
         if (customAmountField) {
             customAmountField.addEventListener('input', (e) => {
-                // Clear button selections
-                amountBtns.forEach(b => b.classList.remove('active'));
-
                 const val = e.target.value;
                 if (val && Number(val) > 0) {
-                    selectedAmount = val;
-                    amountErrorMsg.classList.add('hidden');
-                } else {
-                    selectedAmount = null;
+                    if (amountErrorMsg) amountErrorMsg.classList.add('hidden');
                 }
             });
         }
-
-        const razorpayLinks = {
-            101: "https://rzp.io/rzp/YQ4VpLr6",
-            201: "https://rzp.io/rzp/lTIbNYUi",
-            301: "https://rzp.io/rzp/TvdQD3n",
-            501: "https://rzp.io/rzp/8wOj4PDu",
-            1001: "https://rzp.io/rzp/tkwsrG5",
-            1501: "https://rzp.io/rzp/i7nOttt"
-        };
 
         // Handle Submit logic
         sendMoneyBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            let amount = selectedAmount;
-            if (customAmountField && customAmountField.value) {
-                amount = customAmountField.value;
-            }
+            let amount = customAmountField ? customAmountField.value : null;
 
             // Validation
             if (!amount || Number(amount) <= 0) {
                 if (amountErrorMsg) {
-                    amountErrorMsg.textContent = "Please select an amount.";
+                    amountErrorMsg.textContent = "Please enter a valid amount (greater than 0).";
                     amountErrorMsg.classList.remove('hidden');
                 }
 
@@ -265,21 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const numAmount = Number(amount);
-
-            if (razorpayLinks[numAmount]) {
-                window.location.href = razorpayLinks[numAmount];
-                return;
-            }
-
-            // If not available, show an error message that only preset amounts are supported
-            if (amountErrorMsg) {
-                amountErrorMsg.textContent = "Only preset amounts are supported at the moment.";
-                amountErrorMsg.classList.remove('hidden');
-            }
-            sendMoneyBtn.style.transform = "translateX(-5px)";
-            setTimeout(() => sendMoneyBtn.style.transform = "translateX(5px)", 100);
-            setTimeout(() => sendMoneyBtn.style.transform = "translateX(0)", 200);
+            // Redirect to Razorpay Generic Payment Page Line
+            window.location.href = "PASTE_YOUR_RAZORPAY_PAYMENT_PAGE_LINK_HERE";
         });
     }
 
