@@ -227,9 +227,84 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Redirect to Razorpay Generic Payment Page Line
-            window.location.href = "https://razorpay.me/@farzainkieidi";
+            // Setup Razorpay options for standard checkout
+            const amountInPaise = Math.round(Number(amount) * 100);
+
+            const options = {
+                key: "YOUR_RAZORPAY_KEY_ID", // Add actual key when deploying
+                amount: amountInPaise,
+                currency: "INR",
+                name: "Farzain Rafikoddin Naikwade",
+                description: "Farzain Ki Eidi",
+                prefill: {
+                    name: userNameInput ? userNameInput.value : ""
+                },
+                theme: {
+                    color: "#014421"
+                },
+                callback_url: "https://farzain-ki-eidi.vercel.app/thankyou.html",
+                redirect: true
+            };
+
+            const rzp = new Razorpay(options);
+            
+            // Show loader while Razorpay initializes
+            if (loaderAnimation) {
+                loaderAnimation.classList.remove('hidden');
+                setTimeout(() => {
+                    loaderAnimation.classList.add('hidden');
+                }, 1500); // Hide after a short delay since Razorpay modal opens
+            }
+
+            rzp.open();
         });
+    }
+
+    // --- Thank You Page Animations ---
+    const thankYouAnimationContainer = document.getElementById('thankYouAnimationContainer');
+    const jazakallahText = document.getElementById('jazakallahText');
+    const duaText = document.getElementById('duaText');
+
+    if (thankYouAnimationContainer) {
+        // Trigger confetti on load
+        triggerConfettiSpecial();
+
+        // Sequential reveal
+        setTimeout(() => {
+            if (jazakallahText) jazakallahText.classList.remove('hidden');
+        }, 1000);
+
+        setTimeout(() => {
+            if (duaText) duaText.classList.remove('hidden');
+        }, 2000);
+    }
+
+    function triggerConfettiSpecial() {
+        if (typeof confetti !== 'undefined') {
+            const duration = 3000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#D4AF37', '#014421', '#ffffff']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#D4AF37', '#014421', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
     }
 
     function triggerConfetti() {

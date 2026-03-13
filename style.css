@@ -567,6 +567,28 @@ body {
     box-shadow: 0 10px 25px var(--gold-glow);
 }
 
+.btn-primary-cta {
+    padding: 18px 20px;
+    font-size: 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--gold) 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    border: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary-cta:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.6);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--primary-color) 100%);
+}
+
+[data-theme='dark'] .btn-primary-cta {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--gold) 100%);
+}
+
 /* =======================================
    Modals & Overlays
    ======================================= */
